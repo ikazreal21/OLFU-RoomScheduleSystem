@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<?php
+session_start();
+require '../connection.php';
+$conn = Connect();
+
+if (isset($_SESSION['login_customer'])) {
+    header("location: ../customer_index.php"); //Redirecting
+} else if (isset($_SESSION['login_client'])) {
+    header("location: ../index.php"); //Redirecting
+} else if (isset($_SESSION['login_secretary'])) {
+    header("location: ../secretary/index.php"); //Redirecting
+} else if (isset($_SESSION['login_depthead'])) {
+    header("location: ../depthead/index.php"); //Redirecting
+} else if (isset($_SESSION['login_prof'])) {
+    // header("location: ../prof/index.php"); //Redirecting
+} else if (isset($_SESSION['login_dean'])) {
+    header("location: ../dean/index.php"); //Redirecting
+}
+?>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OLFU</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/user.css">
+    <link rel="stylesheet" href="../assets/w3css/w3.css">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation" style="color: green">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                    <i class="fa fa-bars"></i>
+                    </button>
+                <a class="navbar-brand page-scroll" href="index.php">
+                   OLFU | CCS </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+
+            <?php
+if (isset($_SESSION['login_client'])) {
+    ?>
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="index.php">Home</a>
+                    </li>
+                    <li>
+                        <a href="#">Welcome <?php echo $_SESSION['login_client']; ?></a>
+                    </li>
+                    <li>
+                    <ul class="nav navbar-nav navbar-right">
+            <li><a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Control Panel <span class="caret"></span> </a>
+                <ul class="dropdown-menu">
+              <li> <a href="addroom.php">Add Room</a></li>
+             
+
+              <li> <a href="clientview.php">schedule list</a></li>
+              <li> <a href="pending_bookings_admin.php">Pending Schedules</a></li>
+              <li> <a href="pending_users.php">Pending Users</a></li>
+              <li> <a href="all_users.php">Users</a></li>
+
+            </ul>
+            </li>
+          </ul>
+                    </li>
+                    <li>
+                        <a href="logout.php">Logout</a>
+                    </li>
+                </ul>
+            </div>
+
+            <?php
+} else if (isset($_SESSION['login_prof'])) {
+    ?>
+                        <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="index.php">Home</a>
+                    </li>
+                    <li>
+                        <a href="#"> Welcome <?php echo $_SESSION['login_prof']; ?></a>
+                    </li>
+                    <li> <a href="../schedule/schedule.php?id=<?php echo $_SESSION['login_prof_id'] ?>"> View Schedule</a>
+                </li>
+                    <li> <a href="pending_bookings.php"> Pending Schedules</a></li>
+                    <li> <a href="mybookings.php"> Schedule History</a></li>
+                    <li>
+                        <a href="../logout.php"> Logout</a>
+                    </li>
+                </ul>
+            </div>
+
+            <?php
+} else {
+    ?>
+
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="index.php">Home</a>
+                    </li>
+                    <li>
+                        <a href="customerlogin.php">Login</a>
+                    </li>
+                </ul>
+            </div>
+                <?php }
+?>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+    <?php $login_customer = $_SESSION['login_prof'];
+
+$sql1 = "SELECT * FROM schedules rc, room c
+    WHERE rc.customer_username='$login_customer' AND c.car_id=rc.car_id AND ( rc.booking_status='approve') or rc.booking_status='decline' order by rc.id desc";
+$result1 = $conn->query($sql1);
+
+if (mysqli_num_rows($result1) > 0) {
+    ?>
+<br>
+<br>
+<br>
+
+<br>
+
+<br>
+
+    <div class="table-responsive" style="padding-left: 100px; padding-right: 100px;" >
+<table class="table table-striped">
+  <thead class="thead-dark">
+<tr>
+<th width="18%">Room</th> 
+<th width="18%">Room Number</th> 
+<th width="18%">Day</th>
+<th width="18%">Book Date</th>
+<th width="18%">Time Start</th>
+<th width="18%">Time End</th>
+</thead>
+<?php
+while ($row = mysqli_fetch_assoc($result1)) {
+        ?>
+<tr>
+<td><?php echo $row["car_name"]; ?></td>
+<td><?php echo $row["car_nameplate"]; ?></td>
+<td><?php echo $row["day_of_week"]; ?></td>
+<td><?php echo date('M d, Y', strtotime($row["rent_start_date"])); ?></td>
+<td><?php echo date('h:i A', strtotime($row["time_start"])); ?></td>
+<td><?php echo date('h:i A', strtotime($row["time_end"])); ?></td>
+<td><?php
+ ?></td>
+
+</tr>
+<?php }?>
+                </table>
+                </div>
+        <?php } else {
+    ?>
+        <div class="container">
+      <div class="jumbotron">
+        <h1 class="text-center">You have not scheduled any rooms.</h1>
+      </div>
+    </div>
+
+            <?php
+}?>
+
+</body>
+<footer class="site-footer">
+        <div class="container">
+            <hr>
+            <div class="row">
+                <div class="col-sm-6">
+                    <h5>© <?php echo date("Y"); ?> OLFU</h5>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</html>
