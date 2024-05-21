@@ -73,9 +73,9 @@ $hours = ['08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM'
     <div class="container">
         <div class="top-links">
             <a href="../session_back.php" class="btn">Back</a>
-            <?php if (!isset($_SESSION['login_prof'])): ?>
-            <a href="add_schedule.php?id=<?php echo $id ?>" class="btn">Add Schedule</a>
-            <a href="list_schedule.php?id=<?php echo $id ?>" class="btn">List of Schedule</a>
+            <?php if (!isset($_SESSION['login_prof']) && !isset($_SESSION['login_secretary'])): ?>
+                    <a href="add_schedule.php?id=<?php echo $id ?>" class="btn">Add Schedule</a>
+                    <a href="list_schedule.php?id=<?php echo $id ?>" class="btn">List of Schedule</a>
             <?php endif; ?>
         </div>
         <div class="header">

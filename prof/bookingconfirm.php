@@ -164,7 +164,7 @@ if (empty($error)) {
             <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="customer_index.php">Home</a>
+                        <a href="index.php">Home</a>
                     </li>
                     <li>
                         <a href="#"></span> Welcome <?php echo $_SESSION['login_prof']; ?></a>
@@ -173,7 +173,7 @@ if (empty($error)) {
                     <li> <a href="mybookings.php"> Schedule History</a></li>
 
                     <li>
-                        <a href="logout.php"></span> Logout</a>
+                        <a href="../logout.php"></span> Logout</a>
                     </li>
                 </ul>
             </div>

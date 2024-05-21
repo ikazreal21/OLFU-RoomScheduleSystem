@@ -17,11 +17,11 @@ $result = $conn->query($sql);
 $result = $result->fetch_all(MYSQLI_ASSOC);
 
 
-$sql = "SELECT * from users where role = 'faculty' and id = $id";
+$sql = "SELECT * from users where role = 'faculty' and user_id = $id";
 $result2 = $conn->query($sql);
 $result2 = $result2->fetch_all(MYSQLI_ASSOC);
 // echo '<pre>';
-// var_dump($result);
+// var_dump($result2);
 // echo '</pre>';
 
 

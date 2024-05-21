@@ -107,6 +107,8 @@ if (isset($_SESSION['login_client'])) {
         <!-- /.container -->
     </nav>
 
+
+
 <?php $login_client = $_SESSION['login_client'];
 
 $sql1 = "SELECT * FROM users WHERE status = 'approve'";
@@ -119,11 +121,14 @@ $result1 = $conn->query($sql1);
 
 if (mysqli_num_rows($result1) > 0) {
     ?>
+
 <div class="container">
       <div class="jumbotron">
         <h1 class="text-center">Users</h1>
       </div>
-    </div>
+<a href="create_user_admin.php" class="btn btn-success">Add User</a>
+
+</div>
 
     <div class="table-responsive" style="padding-left: 100px; padding-right: 100px;" >
 <table class="table table-striped">
